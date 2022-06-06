@@ -2,11 +2,19 @@ import React from 'react'
 import TodoList from './TodoList';
 import Form from './Form';
 
+const initialTodos = [
+  {
+    name: "Drink water",
+    id: 123,
+    completed: false
+  }
+]
+
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      todos: [],
+      todos: initialTodos,
       currentState: '',
     }
   }
@@ -14,7 +22,8 @@ export default class App extends React.Component {
   createObj = (title) => {
     const newObj = {
       name: title,
-      id: Date.now()
+      id: Date.now(),
+      completed: false
     }
 
     this.setState({
@@ -22,29 +31,38 @@ export default class App extends React.Component {
     })
   }
 
+  completeHandler = (itemID) => {
+    const updated = this.state.todos.map(item => {
+      if(item.id === itemID) {
+        return {
+          ...item,
+          completed: !item.completed
+        }
+      }
+      return item;
+    })
 
-  changeHandler = (e) => {
     this.setState({
-      currentState: e.target.value,
+      todos: updated
     })
   }
 
+
+  changeHandler = (e) => {
+    this.setState({currentState: e.target.value,}) // sets currentState to the value
+  }
+
   submitHandler = (e) => {
-    e.preventDefault();
-
-    this.createObj(this.state.currentState);
-
-    this.setState({
-      currentState: ''
-    })
+    e.preventDefault(); // prevents default of page refresh
+    this.createObj(this.state.currentState); // uses the createObj function
+    this.setState({currentState: ''}); // reset form input 
   }
 
   render() {
     return (
       <div>
-        Todo App
 
-        <TodoList todos={this.state.todos}/>
+        <TodoList todos={this.state.todos} complete={this.completeHandler}/>
 
         <Form 
         addNew={this.createObj} 
