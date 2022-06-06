@@ -16,6 +16,7 @@ export default class App extends React.Component {
     this.state = {
       todos: initialTodos,
       currentState: '',
+      hidden: false
     }
   }
 
@@ -47,6 +48,11 @@ export default class App extends React.Component {
     })
   }
 
+  hideCompleted = () => {
+    this.setState({
+      hidden: !this.state.hidden
+    })
+  }
 
   changeHandler = (e) => {
     this.setState({currentState: e.target.value,}) // sets currentState to the value
@@ -62,13 +68,15 @@ export default class App extends React.Component {
     return (
       <div>
 
-        <TodoList todos={this.state.todos} complete={this.completeHandler}/>
+        <TodoList todos={this.state.todos} complete={this.completeHandler} hidden={this.state.hidden}/>
 
         <Form 
         addNew={this.createObj} 
         submitHandler={this.submitHandler} 
         changeHandler={this.changeHandler} 
         current={this.state.currentState}
+        hide={this.hideCompleted}
+        hidden={this.state.hidden}
         />
       </div>
     )
