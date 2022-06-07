@@ -50,7 +50,16 @@ export default class App extends React.Component {
 
   hideCompleted = () => {
     this.setState({
+      // todos: this.state.todos.filter(item => {
+      //   if(!item.completed) return item;
+      // }),
       hidden: !this.state.hidden
+    })
+  }
+
+  clearCompleted = () => {
+    this.setState({
+      todos: this.state.todos.filter(item => !(item.completed))
     })
   }
 
@@ -77,6 +86,7 @@ export default class App extends React.Component {
         current={this.state.currentState}
         hide={this.hideCompleted}
         hidden={this.state.hidden}
+        clear={this.clearCompleted}
         />
       </div>
     )
